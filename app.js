@@ -55,3 +55,31 @@ app.get('/artist-search', (req, res) => {
       res.send('Error occurred while searching for artists');
     });
 });
+
+// Artist album route
+
+app.get('/albums/:artistId', (req, res, next) => {
+  spotifyApi.getArtistAlbums(req.params.artistId)
+    .then(data => {
+      console.log('Artist albums', data.body);
+      res.render('albums', { albums: data.body.items });
+    })
+    .catch(err => {
+      console.error('Error fetching artist albums:', err);
+      res.send('Error occurred while fetching albums');
+    });
+});
+
+// Tracks Route
+
+app.get('/tracks/:albumId', (req, res, next) => {
+  spotifyApi.getAlbumTracks(req.params.albumId)
+    .then(data => {
+      console.log('Album tracks', data.body);
+      res.render('tracks', { tracks: data.body.items });
+    })
+    .catch(err => {
+      console.error('Error fetching album tracks:', err);
+      res.send('Error occurred while fetching tracks');
+    });
+});
